@@ -4,9 +4,9 @@ import time
 import os
 
 
-upper_cactus_path = "images/0.jpg"
-lower_cactus_path = "images/1.jpg"
-five_score_path = "images/5.jpg"
+cactus_path = "images/0.jpg"
+small_cactus_path = "images/cactus.png"
+# gear_3_path = "images/gear_3.png"
 
 for i in range(3):
     print(3 - i)
@@ -16,22 +16,30 @@ for i in range(3):
 # Position y = 400 should be blank, if it is not, then there is a cactus
 # Position y = 412 is height of the small cacti
 
-pyautogui.moveTo(x=800, y=400, duration=0.2)
+pyautogui.moveTo(x=739, y=405, duration=0.2)
 pyautogui.click()
+
 # Start the game
 pyautogui.press('up')
-upper_region = (800, 416, 12, 11)
-lower_region = (780, 413, 78, 12)
+speeds = {
+            0: {"upper_region": (725, 410, 103, 8),
+                "lower_region": (725, 400, 146, 34),
+                },
+            3: {"upper_region": (725, 410, 130, 8),
+                "lower_region": (725, 400, 180, 34),
+                }
+          }
+# gear_region = (1223, 311, 15, 15)
+# gear = None
+upper_region = speeds[0]["upper_region"]
+lower_region = speeds[0]["lower_region"]
+
+
 
 while True:
-    location = pyautogui.locateOnScreen(upper_cactus_path, region=upper_region)
-    # lower_location = pyautogui.locateOnScreen(lower_cactus_path, region=lower_region)
-    if not location:
+    location = pyautogui.locateOnScreen(cactus_path, region=upper_region, grayscale=True)
+    lower_location = pyautogui.locateOnScreen(small_cactus_path, region=lower_region, grayscale=True)
+    if lower_location:
         pyautogui.press('up')
-    # if not lower_location and location:
-    #     pyautogui.press('up')
-    score = pyautogui.locateOnScreen(five_score_path, region=(1210, 305, 20, 20))
-    if score:
-        print("Speed up!")
-        upper_region = (740, 400, 30, 12)
-        lower_region = (760, 413, 78, 12)
+    if location:
+        pyautogui.press('up')
